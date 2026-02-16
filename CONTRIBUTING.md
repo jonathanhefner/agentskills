@@ -16,12 +16,37 @@ Found a bug in the spec, documentation, or reference library? [Open an issue](ht
 
 Have a feature request, spec design question, or general feedback? [Start a discussion](https://github.com/agentskills/agentskills/discussions). We use Discussions for proposals and open-ended conversation, and reserve Issues for concrete bugs and problems.
 
+Proposals should address real implementation challenges you've encountered, not theoretical concerns. Show us the problem you faced and how your proposal addresses it.
+
+We maintain a high bar for additions to the spec — it is much easier to add things to a specification than to remove them. Every new feature adds complexity that all implementers must understand and support. When in doubt, leave it out.
+
 > [!NOTE]
 > **Not sure where to post?** Default to [Discussions](https://github.com/agentskills/agentskills/discussions). If it turns out to be a bug, we'll convert it to an issue.
+
+### Ecosystem Listings & Logo Requests
+
+If your product or platform has implemented Agent Skills compatibility, you can request to be listed on [agentskills.io](https://agentskills.io). Your product must be publicly available and able to discover and execute skills today — we do not list products that have only announced intent to support Skills or are still in private beta.
+
+Submit a pull request with:
+
+1. **Logo files** — SVG preferred; PNG acceptable (min 200×200px). Provide light and dark variants and follow the existing format in `docs/images/logos/`.
+2. **A carousel entry** — Add your logo to the array in [`docs/snippets/LogoCarousel.jsx`](docs/snippets/LogoCarousel.jsx).
+3. **Product information** — In your PR description, include your product name, a link to your product, and a link to documentation showing your Skills implementation.
+
+We may ask for a demo or screenshot to verify the implementation. Logo requests are reviewed by the Anthropic team.
 
 ### Reference Library (`skills-ref/`)
 
 We're still determining the direction for the reference library and are not accepting code contributions to it at this time. Bug reports and feedback are still welcome via [Issues](https://github.com/agentskills/agentskills/issues) and [Discussions](https://github.com/agentskills/agentskills/discussions), respectively.
+
+### What We're Not Accepting (Yet)
+
+To keep the project focused during this early stage, we are currently not accepting:
+
+- **Skill submissions** — We don't maintain a directory of community skills. This may change in the future.
+- **Major architectural changes** — We're still iterating on the core specification. Large-scale redesigns are premature.
+
+If you're unsure whether your contribution fits, open a [Discussion](https://github.com/agentskills/agentskills/discussions) before investing significant effort.
 
 ## Development Setup
 
@@ -45,6 +70,8 @@ Local preview will be available at `http://localhost:3000`.
 2. Create a branch for your changes
 3. Make your changes and verify they work locally
 4. Submit a pull request
+
+Keep PRs focused on one logical change and link any related issues.
 
 ## AI Contributions
 
@@ -84,4 +111,4 @@ We reserve the right to close submissions that appear to not follow the disclosu
 
 ## License
 
-By contributing, you agree that your contributions will be licensed under the [Apache License 2.0](LICENSE).
+By contributing, you agree that your contributions will be licensed under the [Apache License 2.0](LICENSE) for code and specification files, and [CC-BY 4.0](docs/LICENSE) for documentation.
