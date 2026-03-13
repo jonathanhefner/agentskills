@@ -3,7 +3,7 @@ title: "Quickstart"
 description: "Create your first Agent Skill and see it work in VS Code."
 ---
 
-In this tutorial, you'll create a skill that teaches an agent how to reliably count letter occurrences in a word — a task that LLMs are notoriously inconsistent at on their own. By the end, you'll have a working skill and an understanding of the basic structure of the format.
+In this tutorial, you'll create a skill that teaches an agent to count letter occurrences in a word — a task LLMs are notoriously bad at on their own.
 
 ## Prerequisites
 
@@ -31,10 +31,14 @@ Use the following command to count occurrences of a letter in a word:
 echo "<word>" | tr -cd '<letter>' | wc -c
 ```
 
+```powershell
+("<word>" -replace '[^<letter>]').Length
+```
+
 Replace `<word>` with the target word and `<letter>` with the letter to count.
 ````
 
-That's it — one file, about 15 lines. Here's what each part does:
+That's it — one file, under 20 lines. Here's what each part does:
 
 - **`name`** — A short identifier for the skill. Must match the folder name.
 - **`description`** — Tells the agent when to use this skill. This is how the agent decides whether to activate it.
@@ -47,7 +51,7 @@ That's it — one file, about 15 lines. Here's what each part does:
 3. Select **Agent** mode from the mode dropdown at the top of the chat panel.
 4. Ask: **"How many times does the letter r appear in strawberry?"**
 
-The agent should activate the `count-letters` skill, run the `tr | wc` command, and return the correct answer: **3**.
+The agent should activate the `count-letters` skill. It may ask for permission to run a terminal command — allow it. It will run the command and return the correct answer: **3**.
 
 <Tip>
 Type `/skills` in Copilot Chat to verify your skill was discovered. If `count-letters` doesn't appear, check that the file is at `.agents/skills/count-letters/SKILL.md` relative to your project root.
@@ -55,21 +59,21 @@ Type `/skills` in Copilot Chat to verify your skill was discovered. If `count-le
 
 ## How it works
 
-When you added the skill to your project, three things happened behind the scenes:
+Here's what happened behind the scenes:
 
 1. **Discovery** — When the chat session started, the agent scanned default skill directories and found your skill. It read only the `name` and `description`, just enough to know when the skill might be relevant.
 
 2. **Activation** — When you asked about counting letters, the agent matched your question to the skill's description and loaded the full `SKILL.md` body into context.
 
-3. **Execution** — The agent followed the instructions in the body, adapting the `tr | wc` command to the specific word and letter in your question.
+3. **Execution** — The agent followed the instructions in the body, adapting the terminal command to the specific word and letter in your question.
 
-This process leverages **progressive disclosure**. The agent can have access to many skills without loading all their instructions up front. For more detail, see [How skills work](/what-are-skills#how-skills-work).
+This process uses **progressive disclosure** to let the agent access many skills without loading all their instructions up front. For more detail, see [How skills work](/what-are-skills#how-skills-work).
 
 ## Next steps
 
 You've created a working Agent Skill. From here:
 
 - **[Best practices](/skill-creation/best-practices)** — How to write skills that are well-scoped and effective.
-- **[Optimizing descriptions](/skill-creation/optimizing-descriptions)** — Test and improve your skill's description so it activates on the right prompts.
+- **[Optimizing skill descriptions](/skill-creation/optimizing-descriptions)** — Test and improve your skill's description so it activates on the right prompts.
 - **[Specification](/specification)** — The complete format reference for `SKILL.md` files.
 - **[Example skills](https://github.com/anthropics/skills)** — Browse real-world skills on GitHub.
