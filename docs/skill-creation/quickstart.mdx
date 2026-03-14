@@ -3,7 +3,7 @@ title: "Quickstart"
 description: "Create your first Agent Skill and see it work in VS Code."
 ---
 
-In this tutorial, you'll create a skill that teaches an agent to count letter occurrences in a word — a task LLMs are notoriously bad at on their own.
+In this tutorial, you'll create a skill that teaches an agent to roll dice using true randomness — something LLMs fundamentally cannot do on their own.
 
 ## Prerequisites
 
@@ -15,45 +15,48 @@ This tutorial uses VS Code, but Agent Skills are an open format. The same skill 
 
 ## Create the skill
 
-A skill is a folder containing a `SKILL.md` file. VS Code looks for skills in `.agents/skills/` by default. Create `.agents/skills/count-letters/SKILL.md` in your project:
+A skill is a folder containing a `SKILL.md` file. VS Code looks for skills in `.agents/skills/` by default. Create `.agents/skills/roll-dice/SKILL.md` in your project:
 
-````markdown .agents/skills/count-letters/SKILL.md
+````markdown .agents/skills/roll-dice/SKILL.md
 ---
-name: count-letters
-description: Count letter occurrences in a word. Use when asked to count how many times a specific letter appears in a word.
+name: roll-dice
+description: Roll dice with true randomness. Use when asked to roll a die (d6, d20, etc.), roll dice, or generate a random dice roll.
 ---
 
-Run one of the following commands to count occurrences of a letter in a word:
+## Rolling dice
+
+To roll a die, generate a random number from 1 to the number of sides using the following command:
 
 ```bash
-echo "<word>" | tr -cd '<letter>' | wc -c
+shuf -i 1-<sides> -n 1
 ```
 
 ```powershell
-("<word>" -replace '[^<letter>]').Length
+Get-Random -Minimum 1 -Maximum (<sides> + 1)
 ```
 
-Replace `<word>` with the target word and `<letter>` with the letter to count.
+Replace `<sides>` with the number of sides on the die (e.g., 6 for a standard die, 20 for a d20).
 ````
 
 That's it — one file, under 20 lines. Here's what each part does:
 
 - **`name`** — A short identifier for the skill. Must match the folder name.
 - **`description`** — Tells the agent when to use this skill. This is how the agent decides whether to activate it.
-- **The body** — Instructions the agent follows when the skill activates. Here, the agent is instructed to run a command that strips everything except the target letter and counts what remains.
+- **The body** — Instructions the agent follows when the skill activates. Here, the agent is instructed to generate a random number using a terminal command, substituting the number of sides from the user's request.
 
 ## Try it out
 
 1. Open your project in VS Code.
 2. Open the Copilot Chat panel.
-3. Select **Agent** mode from the mode dropdown at the top of the chat panel.
-4. Ask: **"How many times does the letter r appear in strawberry?"**
+3. Select **Agent** mode from the mode dropdown at the bottom of the chat panel.
+4. Type `/skills` to confirm that `roll-dice` appears in the list. If it doesn't, check that the file is at `.agents/skills/roll-dice/SKILL.md` relative to your project root.
+5. Ask: **"Roll a d20"**
 
-The agent should activate the `count-letters` skill. It may ask for permission to run a terminal command — allow it. It will run the command and return the correct answer: **3**.
+The agent should activate the `roll-dice` skill. It may ask for permission to run a terminal command — allow it. It will run the command and return a random number between 1 and 20.
 
-<Tip>
-Type `/skills` in Copilot Chat to verify your skill was discovered. If `count-letters` doesn't appear, check that the file is at `.agents/skills/count-letters/SKILL.md` relative to your project root.
-</Tip>
+<Note>
+Tool-use reliability varies across models — some follow skill instructions and run commands consistently, while others may attempt to answer on their own. If the agent responds without running a terminal command, try selecting a different model from the model dropdown.
+</Note>
 
 ## How it works
 
@@ -61,9 +64,9 @@ Here's what happened behind the scenes:
 
 1. **Discovery** — When the chat session started, the agent scanned default skill directories and found your skill. It read only the `name` and `description`, just enough to know when the skill might be relevant.
 
-2. **Activation** — When you asked about counting letters, the agent matched your question to the skill's description and loaded the full `SKILL.md` body into context.
+2. **Activation** — When you asked about rolling dice, the agent matched your question to the skill's description and loaded the full `SKILL.md` body into context.
 
-3. **Execution** — The agent followed the instructions in the body, adapting the terminal command to the specific word and letter in your question.
+3. **Execution** — The agent followed the instructions in the body, adapting the terminal command to the number of sides in your request.
 
 This process uses **progressive disclosure** to let the agent access many skills without loading all their instructions up front. For more detail, see [How skills work](/what-are-skills#how-skills-work).
 
